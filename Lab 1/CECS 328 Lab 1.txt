@@ -1,0 +1,85 @@
+import random
+import time
+
+
+def linear_search(a, key):
+    length_a = len(a)  # storing the length of the array
+    for i in range(length_a):
+        if a[i] == key:  # if element equals to key in array
+            return True
+    return False
+
+
+print("Part A: \n")
+
+user_input = int(input('Plese enter a positive integer: '))
+
+x = [random.randint(-1000, 1000) for i in range(user_input)]  # generating a list of random numbers
+
+x_random = x[random.randint(0, user_input - 1)]  # generating a random key
+
+# timer for linear search
+start_ls = time.time_ns()
+for i in range(100):
+    linear_search(x, x_random)
+stop_ls = time.time_ns()
+
+end_ls = (stop_ls - start_ls) / (100)
+
+print("Average time of linear search for user input:", end_ls, "ns")
+
+
+def binary_search(a, s, e, key):
+    mid = (s + e) // 2  # flooring the division so it's not a float
+
+    if s <= e: # if start <= end
+        if a[mid] > key:  # not in upper so moves to lower
+            return binary_search(a, s, mid - 1, key)
+        elif a[mid] < key:  # not in the lower so moves to upper
+            return binary_search(a, mid + 1, e, key)
+        else:
+            return True  # found
+    return False  # not found
+
+
+arr_length = len(x)
+x.sort()  # sorting the array for binary search
+
+start_ls = time.time_ns()
+for i in range(100):
+    binary_search(x, 0, arr_length - 1, x_random)
+stop_ls = time.time_ns()
+
+end_ls = (stop_ls - start_ls) / (100)
+
+print("Average time of binary search for user input:", end_ls, "ns")
+
+
+print("\nPart B: \n")
+
+key_val = 5000  # setting the key to not be in the array
+
+n_range = 10 ** 5 # size for array  
+
+x2 = [random.randint(-1000, 1000) for i in range(n_range)]  # generating a list of random numbers in the range of n = 10^5
+
+# calculating time for worst case scenario of linear search
+start_ls_ws = time.time_ns()
+linear_search(x2, key_val)
+stop_ls_ws = time.time_ns()
+end_ls_ws = (stop_ls_ws - start_ls_ws)
+
+print("Worst Case Running Time for Linear Search in n = 10^5 Time:", end_ls_ws, "ns")
+
+# calculating time for worst case scenario of binary search
+start_bs_ws = time.time_ns()
+binary_search(x, 0, arr_length - 1, key_val)
+stop_bs_ws = time.time_ns()
+end_bs_ws = (stop_bs_ws - start_bs_ws)
+
+print("Worst Case Running Time for Binary Search in n = 10^5 Time:", end_bs_ws, "ns")
+
+"""
+Part B. 4
+worst_case_bs = end_bs_ws / math.log2(n_range)
+"""
